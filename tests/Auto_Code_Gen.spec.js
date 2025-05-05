@@ -1,0 +1,30 @@
+import { test, expect } from '@playwright/test';
+
+test('Auto_Code_Generate', async ({ page }) => {
+  await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+  await page.getByRole('textbox', { name: 'Username' }).click();
+  await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.locator('div').filter({ hasText: /^Punched OutPunched Out: Mar 29th at 01:19 PM \(GMT 7\)$/ }).first().click();
+  await page.getByText('Punched Out', { exact: true }).click();
+  await page.getByRole('link', { name: 'My Info' }).click();
+  await page.getByRole('textbox', { name: 'First Name' }).click();
+  await page.getByRole('textbox', { name: 'Middle Name' }).click();
+  await page.getByRole('textbox', { name: 'Last Name' }).click();
+  await page.getByRole('textbox', { name: 'First Name' }).click();
+  await page.locator('div').filter({ hasText: /^Driver's License NumberLicense Expiry Date$/ }).locator('i').click();
+  await page.getByRole('listitem').filter({ hasText: '2015' }).locator('i').click();
+  await page.getByText('2023').click();
+  await page.getByText('2', { exact: true }).click();
+  await page.locator('form').filter({ hasText: 'Employee Full NameEmployee' }).getByRole('button').click();
+  await page.locator('form').filter({ hasText: 'Blood TypeA+Test_Field Save' }).getByRole('button').click();
+  await page.locator('form').filter({ hasText: 'Blood TypeA+Test_Field Save' }).getByRole('button').click();
+  await page.getByRole('button', { name: '' }).click();
+  await page.locator('form').filter({ hasText: 'Employee Full NameEmployee' }).getByRole('button').click();
+  await page.locator('form').filter({ hasText: 'Blood TypeA+Test_Field Save' }).getByRole('button').click();
+  await page.getByText('test.png').click();
+  await page.getByRole('listitem').filter({ hasText: 'FirstNameTest LastNameTest' }).locator('i').click();
+  await page.getByRole('menuitem', { name: 'Logout' }).click();
+});
