@@ -29,12 +29,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Step 4: Install Playwright browsers
-      - name: Install Playwright browsers
+      # Step 4: Install Playwright and browsers
+      - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # Step 5: Run Playwright tests
-      - name: Run Automation_Store.spec.js
+      # Step 5: Run only the Chromium test
+      - name: Run Automation_Store.spec.js in Chromium
         run: npx playwright test tests/Automation_Store.spec.js --project=chromium --reporter=line
 
       # Step 6: Generate Allure Report
@@ -44,24 +44,9 @@ jobs:
           npx playwright show-report --output=allure-report
         continue-on-error: true
 
-      # Step 7: Upload Allure Report as Artifact
+      # Step 7: Upload Allure Report
       - name: Upload Allure Report
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: allure-report
-
-      # Step 8: OPTIONAL - Send Email with Allure Report
-      # Uncomment below after confirming allure-report folder is generated
-      # - name: Send Email
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.mail.yahoo.com
-      #     server_port: 465
-      #     username: tarlesh_parmar@yahoo.com
-      #     password: ${{ secrets.YAHOO_APP_PASSWORD }}
-      #     subject: Playwright Test Report
-      #     body: "Playwright test execution completed. Find Allure report attached."
-      #     to: tarlesh_parmar@yahoo.com
-      #     from: tarlesh_parmar@yahoo.com
-      #     attachments: allure-report/**
