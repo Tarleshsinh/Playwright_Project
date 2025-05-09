@@ -27,26 +27,41 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Step 4: Install Playwright browsers
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # Step 5: Run the specific test file
+      # Step 5: Run Playwright tests
       - name: Run Automation_Store.spec.js
-        run: npx playwright test tests/Automation_Store.spec.js --project=chromium --headed
+        run: npx playwright test tests/Automation_Store.spec.js --project=chromium --reporter=line
 
-      # Step 6: Send Email with Allure Report
-      - name: Send Email
-        uses: dawidd6/action-send-mail@v3
+      # Step 6: Generate Allure Report
+      - name: Generate Allure Report
+        run: |
+          mkdir -p allure-report
+          npx playwright show-report --output=allure-report
+        continue-on-error: true
+
+      # Step 7: Upload Allure Report as Artifact
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v3
         with:
-          server_address: smtp.mail.yahoo.com
-          server_port: 465
-          username: tarlesh_parmar@yahoo.com
-          password: ${{ secrets.YAHOO_APP_PASSWORD }}
-          subject: Playwright Test Report
-          body: "The Playwright test execution has completed. Please find the Allure report attached."
-          to: tarlesh_parmar@yahoo.com
-          from: tarlesh_parmar@yahoo.com
-          attachments: allure-report/**
+          name: allure-report
+          path: allure-report
+
+      # Step 8: OPTIONAL - Send Email with Allure Report
+      # Uncomment below after confirming allure-report folder is generated
+      # - name: Send Email
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.mail.yahoo.com
+      #     server_port: 465
+      #     username: tarlesh_parmar@yahoo.com
+      #     password: ${{ secrets.YAHOO_APP_PASSWORD }}
+      #     subject: Playwright Test Report
+      #     body: "Playwright test execution completed. Find Allure report attached."
+      #     to: tarlesh_parmar@yahoo.com
+      #     from: tarlesh_parmar@yahoo.com
+      #     attachments: allure-report/**
