@@ -36,6 +36,8 @@ test.describe('Automation Store', () => {
 
         // Take a screenshot of the element
         await nfpaCylinders.screenshot({ path: './screenshots/nfpaa_cylinders.png' }); // Save the screenshot
+        
+
     });
 });
 
